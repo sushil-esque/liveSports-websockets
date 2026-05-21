@@ -23,18 +23,8 @@ export const createMatchSchema = z
     sport: z.string().trim().min(1, "Sport is required"),
     homeTeam: z.string().trim().min(1, "Home team is required"),
     awayTeam: z.string().trim().min(1, "Away team is required"),
-    startTime: z
-      .string()
-      .refine(
-        (val) => !isNaN(Date.parse(val)),
-        "Start time must be a valid ISO date string",
-      ),
-    endTime: z
-      .string()
-      .refine(
-        (val) => !isNaN(Date.parse(val)),
-        "End time must be a valid ISO date string",
-      ),
+    startTime: z.iso.datetime(),
+    endTime: z.iso.datetime(),
     homeScore: z.coerce.number().int().nonnegative().optional(),
     awayScore: z.coerce.number().int().nonnegative().optional(),
   })
