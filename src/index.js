@@ -11,14 +11,16 @@ const app = express();
 // http routes and ws upgrade to coexist on one port
 const server = http.createServer(app);
 // Middleware
+app.use(securityMiddleware());
 app.use(express.json());
 
 // Routes
+
 app.get("/", (req, res) => {
   res.send({ message: "Welcome to the Express server!" });
 });
 
-app.use(securityMiddleware());
+
 app.use("/matches", matchRouter);
 const { broadCastMatchCreated } = attachWebSocketServer(server);
 app.locals.broadCastMatchCreated = broadCastMatchCreated;
