@@ -44,9 +44,9 @@ commentaryRouter.get("/", async (req, res) => {
 
     res.status(200).send({ data });
   } catch (e) {
+    console.error("Failed to fetch commentary", e);
     res.status(500).send({
       error: "Failed to fetch commentary.",
-      details: JSON.stringify(e),
     });
   }
 });
@@ -102,15 +102,15 @@ commentaryRouter.post("/", async (req, res) => {
       })
       .returning();
 
-      if(res.app.locals.broadcastCommentary){
-        res.app.locals.broadcastCommentary(result.matchId, result);
-      }
+    if (res.app.locals.broadcastCommentary) {
+      res.app.locals.broadcastCommentary(result.matchId, result);
+    }
 
     res.status(201).send({ data: result });
   } catch (e) {
+    console.error("Failed to create commentary", e);
     res.status(500).send({
       error: "Failed to create commentary.",
-      details: JSON.stringify(e),
     });
   }
 });
