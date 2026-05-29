@@ -5,6 +5,7 @@ const HOST = process.env.HOST || "0.0.0.0";
 import http from "http";
 import { attachWebSocketServer } from "./ws/server.js";
 import { securityMiddleware } from "./arcjet.js";
+import { commentaryRouter } from "./routes/commentary.js";
 
 const app = express();
 // we need to wrap the express app in a standard node http server allowing both
@@ -22,8 +23,11 @@ app.get("/", (req, res) => {
 
 
 app.use("/matches", matchRouter);
-const { broadCastMatchCreated } = attachWebSocketServer(server);
+app.use("/matches/:id/commentary", commentaryRouter);
+
+const { broadCastMatchCreated, broadcastCommentary } = attachWebSocketServer(server);
 app.locals.broadCastMatchCreated = broadCastMatchCreated;
+app.locals.broadcastCommentary = broadcastCommentary;
 
 // Start server
 server.listen(PORT, HOST, () => {
